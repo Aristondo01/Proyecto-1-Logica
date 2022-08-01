@@ -2,8 +2,9 @@ import itertools
 from unittest import result
 
 literals = {}
-valores=[]
+
 temp = []
+valores=[]  
 
 op1="{{p},{p'}}"
 op2="{{q,p,p'}}"
@@ -24,9 +25,8 @@ def parse_input(input):
                     if acu[0:1] in literals:
                         literals[acu] = literals[acu[0:1]]
                     else:
-                        valores.append(False)
-                        literals[acu] = len(valores)-1
                         temp.append([True, False])
+                        literals[acu] = len(temp)-1
                     
                 acu = ""
             elif element != " ":
@@ -51,8 +51,8 @@ def eliminateKeys(op):
             j+=1
     return arreglo
             
-            
-def evaluate(formulab):
+    
+def evaluate(formulab, ):
     cartesian = [element for element in itertools.product(*temp)]
     for ordered_element in cartesian:
         outer_res = True
@@ -65,15 +65,21 @@ def evaluate(formulab):
                 res = res or value
             outer_res = outer_res and res
         if outer_res:
+            valores.append(ordered_element)
             return True
     return False
 
 def fuerzaBruta(expresionB):
     parse_input(expresionB)
+    valores.clear()
     Result = evaluate(eliminateKeys(expresionB))
     print(Result)
     if (Result):
-        print(valores)
+        for keys in literals.keys():
+            if "'" in keys:
+                print(keys, not valores[0][literals[keys]])
+            else:
+                print(keys, valores[0][literals[keys]])
     print("---------------------")
 
 def opDeterminadas():
