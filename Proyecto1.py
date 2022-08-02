@@ -52,7 +52,7 @@ def eliminateKeys(op):
     return arreglo
             
     
-def evaluate(formulab, ):
+def evaluate(formulab):
     cartesian = [element for element in itertools.product(*temp)]
     for ordered_element in cartesian:
         outer_res = True
@@ -81,6 +81,34 @@ def fuerzaBruta(expresionB):
             else:
                 print(keys, valores[0][literals[keys]])
     print("---------------------")
+
+def select_literal(expresionB):
+    for c in expresionB:
+        for literal in c:
+            return literal[0]
+ 
+
+def dpllCP(expresionB, I={}):
+    parse_input(expresionB)
+    if (evaluate(eliminateKeys(expresionB))):
+        for keys in literals.keys():
+            if "'" in keys:
+                print(keys, not valores[0][literals[keys]])
+            else:
+                print(keys, valores[0][literals[keys]])
+        print("---------------------")
+        return True
+    else:
+        for literal in select_literal(expresionB):
+            if literal not in I:
+                I[literal] = True
+                if dpllCP(expresionB, I):
+                    return True
+                I[literal] = False
+                if dpllCP(expresionB, I):
+                    return True
+                I.pop(literal)
+        return False
 
 def opDeterminadas():
     print("Evaluar si la formula booleana es satisfacible")
@@ -115,5 +143,18 @@ def menu():
                     fuerzaBruta(op5)
                 if (opcion == "f"):
                     fuerzaBruta(op6)
-                                
+        elif opcion == "2":
+            opcion=opDeterminadas()
+            if (opcion == "a"):
+                print(dpllCP(op1))
+            if (opcion == "b"):
+                print(dpllCP(op2))
+            if (opcion == "c"):
+                print(dpllCP(op3))
+            if (opcion == "d"):
+                print(dpllCP(op4))
+            if (opcion == "e"):
+                print(dpllCP(op5))
+            if (opcion == "f"):
+                print(dpllCP(op6))              
 menu()
