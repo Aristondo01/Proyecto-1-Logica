@@ -4,14 +4,15 @@ from unittest import result
 literals = {}
 
 temp = []
-valores=[]  
+valores = []
 
-op1="{{p},{p'}}"
-op2="{{q,p,p'}}"
-op3="{{p',r',s'}, {q',p',s'}}"
-op4="{{p,r',s'}, {q',p',s'}}"
-op5="{{p',q',r'},{q,r',p},{p',q,r}}"
-op6="{{p',q',r'},{q,r',p},{p',q,r}}"
+op1 = "{{p},{p'}}"
+op2 = "{{q,p,p'}}"
+op3 = "{{p',r',s'}, {q',p',s'}}"
+op4 = "{{p,r',s'}, {q',p',s'}}"
+op5 = "{{p',q',r'},{q,r',p},{p',q,r}}"
+op6 = "{{p',q',r'},{q,r',p},{p',q,r}}"
+
 
 def parse_input(input):
     count = 0
@@ -27,31 +28,31 @@ def parse_input(input):
                     else:
                         temp.append([True, False])
                         literals[acu] = len(temp)-1
-                    
+
                 acu = ""
             elif element != " ":
                 acu += element
         if element == "}":
             count -= 1
-        
+
 
 def eliminateKeys(op):
     temp = op[1:(len(op)-1)]
-    arreglo= temp.split("}")
-    for i in range (len(arreglo)):
-        arreglo[i]=arreglo[i].replace("{","")
-        arreglo[i]=arreglo[i].replace(" ","")
-        arreglo[i]=arreglo[i].split(",")
+    arreglo = temp.split("}")
+    for i in range(len(arreglo)):
+        arreglo[i] = arreglo[i].replace("{", "")
+        arreglo[i] = arreglo[i].replace(" ", "")
+        arreglo[i] = arreglo[i].split(",")
     arreglo.pop()
     for i in arreglo:
-        j=0
+        j = 0
         while(j < len(i)):
-            if(i[j]==""):
+            if(i[j] == ""):
                 i.pop(j)
-            j+=1
+            j += 1
     return arreglo
-            
-    
+
+
 def evaluate(formulab):
     cartesian = [element for element in itertools.product(*temp)]
     for ordered_element in cartesian:
@@ -69,6 +70,7 @@ def evaluate(formulab):
             return True
     return False
 
+
 def fuerzaBruta(expresionB):
     parse_input(expresionB)
     valores.clear()
@@ -82,14 +84,16 @@ def fuerzaBruta(expresionB):
                 print(keys, valores[0][literals[keys]])
     print("---------------------")
 
+
 def select_literal(expresionB):
     for c in expresionB:
         for literal in c:
             return literal[0]
- 
+
 
 def dpllCP(expresionB, I={}):
     parse_input(expresionB)
+    valores.clear()
     if (evaluate(eliminateKeys(expresionB))):
         for keys in literals.keys():
             if "'" in keys:
@@ -110,6 +114,7 @@ def dpllCP(expresionB, I={}):
                 I.pop(literal)
         return False
 
+
 def opDeterminadas():
     print("Evaluar si la formula booleana es satisfacible")
     print("A) "+op1)
@@ -120,17 +125,18 @@ def opDeterminadas():
     print("F) "+op6)
     print("G) Salir")
     return input("\nOpcion: ").lower()
-    
+
+
 def menu():
-    opcion=0
-    while(opcion!="3"):
+    opcion = 0
+    while(opcion != "3"):
         print("1) Fuerza bruta")
         print("2) Algoritmo DPLL")
         print("3) Salir")
-        opcion=input("\nOpcion: ")
+        opcion = input("\nOpcion: ")
         if (opcion == "1"):
-            while(opcion!="g"):
-                opcion=opDeterminadas()
+            while(opcion != "g"):
+                opcion = opDeterminadas()
                 if (opcion == "a"):
                     fuerzaBruta(op1)
                 if (opcion == "b"):
@@ -144,17 +150,20 @@ def menu():
                 if (opcion == "f"):
                     fuerzaBruta(op6)
         elif opcion == "2":
-            opcion=opDeterminadas()
-            if (opcion == "a"):
-                print(dpllCP(op1))
-            if (opcion == "b"):
-                print(dpllCP(op2))
-            if (opcion == "c"):
-                print(dpllCP(op3))
-            if (opcion == "d"):
-                print(dpllCP(op4))
-            if (opcion == "e"):
-                print(dpllCP(op5))
-            if (opcion == "f"):
-                print(dpllCP(op6))              
+            while(opcion != "g"):
+                opcion = opDeterminadas()
+                if (opcion == "a"):
+                    print(dpllCP(op1, I={}))
+                if (opcion == "b"):
+                    print(dpllCP(op2, I={}))
+                if (opcion == "c"):
+                    print(dpllCP(op3, I={}))
+                if (opcion == "d"):
+                    print(dpllCP(op4, I={}))
+                if (opcion == "e"):
+                    print(dpllCP(op5, I={}))
+                if (opcion == "f"):
+                    print(dpllCP(op6, I={}))
+
+
 menu()
