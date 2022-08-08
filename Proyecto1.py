@@ -91,28 +91,53 @@ def select_literal(expresionB):
             return literal[0]
 
 
-def dpllCP(expresionB, I={}):
-    parse_input(expresionB)
-    valores.clear()
-    if (evaluate(eliminateKeys(expresionB))):
-        for keys in literals.keys():
-            if "'" in keys:
-                print(keys, not valores[0][literals[keys]])
+def parse_dpll(cnf):
+    list = []
+    a = cnf.split("{")
+    tete = []
+    for i in range(len(a)):
+        if(a[i] != ""):
+            f = a[i].replace("}", "")
+            g = f.split(",")
+            if (g[len(g)-1] == ""):
+                g.remove("")
+            elif (g[len(g)-1] == " "):
+                g.remove(" ")
+            tete.append(g)
+    for i in tete:
+        conj = set()
+        for j in i:
+            if("'" in j):
+                conj.add((j[0:len(j)-1], False))
             else:
-                print(keys, valores[0][literals[keys]])
-        print("---------------------")
-        return True
-    else:
-        for literal in select_literal(expresionB):
-            if literal not in I:
-                I[literal] = True
-                if dpllCP(expresionB, I):
-                    return True
-                I[literal] = False
-                if dpllCP(expresionB, I):
-                    return True
-                I.pop(literal)
-        return False
+                conj.add((j, True))
+        list.append(conj)
+    return list
+
+
+def dpll(cnf, assignments={}):
+
+    if len(cnf) == 0:
+        return True, cnf
+
+    if any([len(c) == 0 for c in cnf]):
+        return False, None
+
+    l = select_literal(cnf)
+
+    new_cnf = [c for c in cnf if (l, True) not in c]
+    new_cnf = [c.difference({(l, False)}) for c in new_cnf]
+    sat, vals = dpll(new_cnf, {**assignments, **{l: True}})
+    if sat:
+        return sat, vals
+
+    new_cnf = [c for c in cnf if (l, False) not in c]
+    new_cnf = [c.difference({(l, True)}) for c in new_cnf]
+    sat, vals = dpll(new_cnf, {**assignments, **{l: False}})
+    if sat:
+        return sat, vals
+
+    return False, None
 
 
 def opDeterminadas():
@@ -153,17 +178,30 @@ def menu():
             while(opcion != "g"):
                 opcion = opDeterminadas()
                 if (opcion == "a"):
-                    print(dpllCP(op1, I={}))
+                    final = parse_dpll(op1)
+                    bol, cnf = dpll(final)
+                    print(bol)
                 if (opcion == "b"):
-                    print(dpllCP(op2, I={}))
+                    final = parse_dpll(op2)
+                    bol, cnf = dpll(final)
+                    print(bol)
                 if (opcion == "c"):
-                    print(dpllCP(op3, I={}))
+                    final = parse_dpll(op3)
+                    bol, cnf = dpll(final)
+                    print(bol)
                 if (opcion == "d"):
-                    print(dpllCP(op4, I={}))
+                    final = parse_dpll(op4)
+                    bol, cnf = dpll(final)
+                    print(bol)
                 if (opcion == "e"):
-                    print(dpllCP(op5, I={}))
+                    final = parse_dpll(op5)
+                    bol, cnf = dpll(final)
+                    print(bol)
                 if (opcion == "f"):
-                    print(dpllCP(op6, I={}))
+                    final = parse_dpll(op6)
+                    bol, cnf = dpll(final)
+                    print(bol)
+                print("---------------------\n")
 
 
 menu()
