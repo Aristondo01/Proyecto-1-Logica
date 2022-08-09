@@ -94,7 +94,6 @@ def select_literal(expresionB):
 def parse_dpll(cnf):
     list = []
     a = cnf.split("{")
-
     tete = []
     for i in range(len(a)):
         if(a[i] != ""):
@@ -109,7 +108,6 @@ def parse_dpll(cnf):
         conj = set()
         for j in i:
             if("'" in j):
-                #conj.add((j[0:len(j)-1], False))
                 conj.add((j[0:len(j)-1], False))
             else:
                 conj.add((j, True))
