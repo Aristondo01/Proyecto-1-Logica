@@ -181,26 +181,38 @@ def menu():
                     final = parse_dpll(op1)
                     bol, cnf = dpll(final)
                     print(bol)
+                    if (bol):
+                        print(final)
                 if (opcion == "b"):
                     final = parse_dpll(op2)
                     bol, cnf = dpll(final)
                     print(bol)
+                    if (bol):
+                        print(final)
                 if (opcion == "c"):
                     final = parse_dpll(op3)
                     bol, cnf = dpll(final)
                     print(bol)
+                    if (bol):
+                        print(final)
                 if (opcion == "d"):
                     final = parse_dpll(op4)
                     bol, cnf = dpll(final)
                     print(bol)
+                    if (bol):
+                        print(final)
                 if (opcion == "e"):
                     final = parse_dpll(op5)
                     bol, cnf = dpll(final)
                     print(bol)
+                    if (bol):
+                        print(final)
                 if (opcion == "f"):
                     final = parse_dpll(op6)
                     bol, cnf = dpll(final)
                     print(bol)
+                    if (bol):
+                        print(final)
                 print("---------------------\n")
 
 
