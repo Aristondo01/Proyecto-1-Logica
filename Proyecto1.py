@@ -94,6 +94,7 @@ def select_literal(expresionB):
 def parse_dpll(cnf):
     list = []
     a = cnf.split("{")
+
     tete = []
     for i in range(len(a)):
         if(a[i] != ""):
@@ -108,6 +109,7 @@ def parse_dpll(cnf):
         conj = set()
         for j in i:
             if("'" in j):
+                #conj.add((j[0:len(j)-1], False))
                 conj.add((j[0:len(j)-1], False))
             else:
                 conj.add((j, True))
@@ -118,7 +120,7 @@ def parse_dpll(cnf):
 def dpll(cnf, assignments={}):
 
     if len(cnf) == 0:
-        return True, cnf
+        return True, assignments
 
     if any([len(c) == 0 for c in cnf]):
         return False, None
@@ -182,37 +184,37 @@ def menu():
                     bol, cnf = dpll(final)
                     print(bol)
                     if (bol):
-                        print(final)
+                        print(cnf)
                 if (opcion == "b"):
                     final = parse_dpll(op2)
                     bol, cnf = dpll(final)
                     print(bol)
                     if (bol):
-                        print(final)
+                        print(cnf)
                 if (opcion == "c"):
                     final = parse_dpll(op3)
                     bol, cnf = dpll(final)
                     print(bol)
                     if (bol):
-                        print(final)
+                        print(cnf)
                 if (opcion == "d"):
                     final = parse_dpll(op4)
                     bol, cnf = dpll(final)
                     print(bol)
                     if (bol):
-                        print(final)
+                        print(cnf)
                 if (opcion == "e"):
                     final = parse_dpll(op5)
                     bol, cnf = dpll(final)
                     print(bol)
                     if (bol):
-                        print(final)
+                        print(cnf)
                 if (opcion == "f"):
                     final = parse_dpll(op6)
                     bol, cnf = dpll(final)
                     print(bol)
                     if (bol):
-                        print(final)
+                        print(cnf)
                 print("---------------------\n")
 
 
