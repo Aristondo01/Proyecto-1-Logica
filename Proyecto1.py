@@ -11,7 +11,7 @@ op2 = "{{q,p,p'}}"
 op3 = "{{p',r',s'}, {q',p',s'}}"
 op4 = "{{p,r',s'}, {q',p',s'}}"
 op5 = "{{p',q',r'},{q,r',p},{p',q,r}}"
-op6 = "{{p',q',r'},{q,r',p},{p',q,r}}"
+op6 = "{{r},{q',r'},{p',q,r'},{q}}"
 
 
 def parse_input(input):
@@ -23,8 +23,11 @@ def parse_input(input):
         elif count == 2:
             if element == "," or element == "}":
                 if not(acu in literals):
-                    if acu[0:1] in literals:
-                        literals[acu] = literals[acu[0:1]]
+                    opposite = ""
+                    if "'" in acu: opposite = acu[0:1]
+                    else: opposite = acu + "'"
+                    if opposite in literals:
+                        literals[acu] = literals[opposite]
                     else:
                         temp.append([True, False])
                         literals[acu] = len(temp)-1
